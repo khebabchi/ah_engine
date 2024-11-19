@@ -14,7 +14,6 @@ use crate::window::Window;
 pub struct AHApp<UserEvent: 'static>{
     pub(crate) window: Window,
     pub(crate) event_queue:AHEventQueue,
-    worlds: HashMap<Worlds, Arc<World>>,
     pub(crate) event_proxy:Option<EventLoopProxy<UserEvent>>
 }
 #[derive(Clone,Hash,Default,Debug, Eq,PartialEq)]
@@ -29,7 +28,6 @@ impl<UserEvent : 'static> AHApp<UserEvent>
         AHApp{
             window: Default::default(),
             event_queue: AHEventQueue::new(event_handler),
-            worlds: Default::default(),
             event_proxy:None
         }
     }

@@ -13,16 +13,6 @@ impl Window {
     pub(super) fn set_handle(&mut self, handle: winit::window::Window) {
         self.window_handle = Some(Arc::new(handle));
     }
-    pub(super) fn set_icon(&self, icon: Icon) {
-        if let Some(handle) = self.window_handle.clone() {
-            handle.set_window_icon(Some(icon));
-        }
-    }
-    pub(super) fn set_title(&self, title: &str) {
-        if let Some(handle) = self.window_handle.clone() {
-            handle.set_title(title);
-        }
-    }
     pub(super) fn resize(&self, size: AHSize) {
         if let Some(handle) = self.window_handle.clone() {
             handle.request_inner_size(size.to_physical_size()).unwrap();

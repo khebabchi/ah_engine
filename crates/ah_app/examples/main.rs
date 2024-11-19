@@ -1,13 +1,13 @@
 use image::GenericImageView;
-use winit::event::WindowEvent;
+use winit::event::{ElementState, KeyEvent, WindowEvent};
+use winit::keyboard::{KeyCode, PhysicalKey};
 use winit::window::Icon;
 use ah_app::{AHAppCmd, AHAppCmdBuffer, AHAppCmdHandler, AHEvent, AHEvents, Actions};
 use ah_app::app_instance::AHApp;
 
 fn main() {
-    let mut app: AHApp<Option<()>>  =AHApp::new(&event_handler);
-    app.set_title("Ah App");
-    app.set_icon(load_icon("assets/favicon.png"));
+    let mut app: AHApp<Option<()>>  =AHApp::new("App Example".to_string(),Some(load_icon("assets/favicon.png")),&event_handler);
+
     app.run();
 }
 
@@ -20,6 +20,25 @@ fn event_handler(events: AHEvents)->AHAppCmdBuffer {
                 match win_event {
                     WindowEvent::CloseRequested => {
                         cmd_buffer.register_cmd(AHAppCmd::Exit);
+                    },WindowEvent::KeyboardInput {
+                        event:
+                        KeyEvent {
+                            state: ElementState::Pressed,
+                            physical_key: PhysicalKey::Code(code),
+                            ..
+                        },
+                        ..
+                    }  => {
+                        match code {
+                            KeyCode::Escape=>{
+                                cmd_buffer.register_cmd(AHAppCmd::Windowed);
+                            }
+                            KeyCode::Enter => {
+                                cmd_buffer.register_cmd(AHAppCmd::FullScreen);
+                            }
+                            _=>{}
+                        }
+
                     }
                     _=>{}
                 }
@@ -35,6 +54,5 @@ pub fn load_icon(path:&str) -> Icon {
     let icon_image = image::open(path).expect("Failed to open icon");
     let (width, height) = icon_image.dimensions();
     let rgba = icon_image.to_rgba8().into_raw();
-
     Icon::from_rgba(rgba, width, height).expect("Failed to create icon")
 }

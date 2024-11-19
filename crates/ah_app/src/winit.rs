@@ -14,7 +14,7 @@ impl<UserEvent> ApplicationHandler<UserEvent> for AHApp<UserEvent> {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
         if !self.window.is_created() {
             let window = event_loop
-                .create_window(Window::default_attributes())
+                .create_window(Window::default_attributes().with_window_icon(self.icon.clone()).with_title(self.title.clone()))
                 .unwrap();
             self.window.set_handle(window);
         }

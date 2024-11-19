@@ -14,7 +14,9 @@ use crate::window::Window;
 pub struct AHApp<UserEvent: 'static>{
     pub(crate) window: Window,
     pub(crate) event_queue:AHEventQueue,
-    pub(crate) event_proxy:Option<EventLoopProxy<UserEvent>>
+    pub(crate) event_proxy:Option<EventLoopProxy<UserEvent>>,
+    pub(crate) title:String,
+    pub(crate) icon:Option<Icon>
 }
 #[derive(Clone,Hash,Default,Debug, Eq,PartialEq)]
 pub enum Worlds{
@@ -24,11 +26,13 @@ pub enum Worlds{
 }
 impl<UserEvent : 'static> AHApp<UserEvent>
 {
-    pub fn new<F>(event_handler:F) -> Self where F:FnMut(AHEvents)->AHAppCmdBuffer + 'static{
+    pub fn new<F>(title:String,icon:Option<Icon>,event_handler:F) -> Self where F:FnMut(AHEvents)->AHAppCmdBuffer + 'static{
         AHApp{
             window: Default::default(),
             event_queue: AHEventQueue::new(event_handler),
-            event_proxy:None
+            event_proxy:None,
+            title,
+            icon,
         }
     }
 
@@ -38,17 +42,6 @@ impl<UserEvent : 'static> AHApp<UserEvent>
     ///   - **ControlFlow::pull** --> **every frame rerender**
     pub fn event_queue(&mut self)->&AHEventQueue{
         &self.event_queue
-    }
-
-    pub fn set_icon(&mut self, icon:Icon) {
-        if self.window.is_created(){
-            self.window.set_icon(icon);
-        }
-    }
-    pub fn set_title(&mut self, title:&str) {
-        if self.window.is_created(){
-            self.window.set_title(title);
-        }
     }
     pub fn resize(&mut self, size:AHSize) {
         if self.window.is_created(){

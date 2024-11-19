@@ -14,7 +14,7 @@
 - **Lightweight ECS**: Basic entity-component-system (ECS) functionality for game logic management.
 - **User-Friendly**: Minimalistic design to ensure ease of learning and integration.
 
-## Getting Started
+## Getting Started  with ah_app example
 
 1. **Install Rust**: Ensure you have Rust installed. Follow the instructions on the [official website](https://www.rust-lang.org/).
    
@@ -22,16 +22,17 @@
     ```bash
     git clone https://github.com/yourusername/ah_engine.git
     cd ah_engine
+    
     ```
 
-3. **Build the Project**:
+3. **Go to ah_app folder**:
     ```bash
-    cargo build
+    cd./crates/ah_app
     ```
 
 4. **Run the Example (when available)**:
     ```bash
-    cargo run
+    cargo run --example main
     ```
 
 ## Future Plans

@@ -1,6 +1,7 @@
 use winit::event::WindowEvent;
 use winit::event_loop::ActiveEventLoop;
-use crate::AHSize;
+use crate::{AHAppCmdBuffer, AHSize};
+use crate::command::AHAppCmdHandler;
 use crate::window::Window;
 
 #[derive(Clone,Debug)]
@@ -17,22 +18,10 @@ pub struct AHEventQueue {
     pub queue: Vec<AHEvent>,
     pub handle_function:AHEventListener
 }
-type AHEventListener=Box<dyn FnMut(&AHEvent,Actions)>;
+type AHEventListener=Box<dyn FnMut(AHEvents)->AHAppCmdBuffer>;
 pub struct Actions<'ael,'win>{
     event_loop:&'ael ActiveEventLoop,
     window:&'win mut Window
-}
-impl<'ael,'win> Actions<'ael,'win>{
-    pub fn new(event_loop:&'ael ActiveEventLoop,window:&'win mut Window) -> Actions<'ael,'win>{
-        Actions{event_loop, window }
-    }
-    pub fn exit_app(&self){
-        self.event_loop.exit();
-    }
-    pub fn resize(&mut self, size:AHSize){
-        self.window.resize(size);
-    }
-
 }
 #[macro_export]
 macro_rules! is_event_requested {
@@ -44,10 +33,10 @@ macro_rules! is_event_requested {
         }
     };
 }
-
+pub type AHEvents=Vec<AHEvent>;
 impl AHEventQueue {
-    pub(crate) fn new() -> AHEventQueue {
-        AHEventQueue{ queue: vec![], handle_function: Box::new(|_,_|{}) }
+    pub(crate) fn new<F>(handle_function:F) -> AHEventQueue where F:FnMut(AHEvents)->AHAppCmdBuffer + 'static{
+        AHEventQueue{ queue: vec![], handle_function:Box::new(handle_function) }
     }
 
     pub(crate) fn push_window_event(&mut self, event: WindowEvent) {
@@ -61,10 +50,10 @@ impl AHEventQueue {
 
     /// for debug only
     ///
-    pub(crate) fn execute_event_handler(&mut self, active_event_loop: &ActiveEventLoop,window:&mut Window) {
-        for event in self.queue.iter() {
-            (self.handle_function)(event,Actions::new(active_event_loop,window));
-        }
+    pub(crate) fn handle(&mut self, active_event_loop: &ActiveEventLoop,window:&Window) {
+        let cmd_handler= AHAppCmdHandler::new(active_event_loop,window);
+        let cmd_buffer=(self.handle_function)(self.queue.clone());
+        cmd_handler.handle(cmd_buffer);
         self.queue.clear();
 
     }

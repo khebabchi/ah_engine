@@ -5,16 +5,17 @@ use bevy_ecs::prelude::World;
 use std::sync::Arc;
 use winit::event_loop::{ControlFlow, EventLoop, EventLoopProxy};
 use winit::window::Icon;
-use crate::AHSize;
+use crate::{AHAppCmdBuffer, AHEvents, AHSize};
+use crate::command::AHAppCmdHandler;
 use crate::event::{AHAppEvent, AHEvent, AHEventQueue, Actions};
 use crate::window::Window;
 /// T is the worlds_hash_map value (the ket is bevy_ecs::World)
 
-pub struct AHApp{
+pub struct AHApp<UserEvent: 'static>{
     pub(crate) window: Window,
     pub(crate) event_queue:AHEventQueue,
     worlds: HashMap<Worlds, Arc<World>>,
-    pub(crate) event_proxy:Option<EventLoopProxy<AHAppEvent>>
+    pub(crate) event_proxy:Option<EventLoopProxy<UserEvent>>
 }
 #[derive(Clone,Hash,Default,Debug, Eq,PartialEq)]
 pub enum Worlds{
@@ -22,12 +23,12 @@ pub enum Worlds{
     Render,
     Game,
 }
-impl AHApp
+impl<UserEvent : 'static> AHApp<UserEvent>
 {
-    pub fn new() -> Self {
+    pub fn new<F>(event_handler:F) -> Self where F:FnMut(AHEvents)->AHAppCmdBuffer + 'static{
         AHApp{
             window: Default::default(),
-            event_queue: AHEventQueue::new(),
+            event_queue: AHEventQueue::new(event_handler),
             worlds: Default::default(),
             event_proxy:None
         }
@@ -56,9 +57,7 @@ impl AHApp
             self.window.resize(size);
         }
     }
-    pub fn handle_events<F>(&mut self, f: F) where F: FnMut(&AHEvent,Actions) + 'static  {
-        self.event_queue.handle_function=Box::new(f);
-    }
+
     pub fn run(&mut self) {
         tracing_subscriber::fmt::init();
         let event_loop = EventLoop::with_user_event().build().unwrap();

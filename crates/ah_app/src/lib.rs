@@ -4,7 +4,8 @@ mod winit;
 pub mod window;
 pub mod app_instance;
 mod event;
-
+mod command;
+pub use command::*;
 
 #[derive(Clone)]
 pub struct AHSize{

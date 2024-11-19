@@ -1,46 +1,52 @@
-use std::sync::Arc;
-use winit::window::Icon;
 use crate::AHSize;
+use std::sync::Arc;
+use winit::window::{Fullscreen, Icon};
 
 #[derive(Default)]
-pub struct Window{
-    window_handle:Option<Arc<winit::window::Window>>
+pub struct Window {
+    window_handle: Option<Arc<winit::window::Window>>,
 }
-impl Window{
-    pub(super) fn is_created(&self) -> bool{
+impl Window {
+    pub(super) fn is_created(&self) -> bool {
         self.window_handle.is_some()
     }
-    pub(super) fn set_handle(&mut self, handle:winit::window::Window){
-        self.window_handle=Some(Arc::new(handle));
+    pub(super) fn set_handle(&mut self, handle: winit::window::Window) {
+        self.window_handle = Some(Arc::new(handle));
     }
-    pub(super) fn set_icon(&mut self, icon:Icon){
-
-        if let Some(handle)= self.window_handle.clone(){
+    pub(super) fn set_icon(&self, icon: Icon) {
+        if let Some(handle) = self.window_handle.clone() {
             handle.set_window_icon(Some(icon));
         }
     }
-    pub(super) fn set_title(&mut self, title: &str){
-
-        if let Some(handle)= self.window_handle.clone(){
+    pub(super) fn set_title(&self, title: &str) {
+        if let Some(handle) = self.window_handle.clone() {
             handle.set_title(title);
         }
     }
-    pub(super) fn resize(&mut self, size: AHSize){
-
-        if let Some(handle)= self.window_handle.clone(){
+    pub(super) fn resize(&self, size: AHSize) {
+        if let Some(handle) = self.window_handle.clone() {
             handle.request_inner_size(size.to_physical_size()).unwrap();
         }
     }
-    pub(super) fn redraw(&mut self){
+    pub fn set_fullscreen(&self, state: bool) -> bool {
+        if let Some(handle) = self.window_handle.clone() {
+            if state {
+                handle.set_fullscreen(Some(Fullscreen::Borderless(None)));
+            } else {
+                handle.set_fullscreen(None);
+            }
 
-        if let Some(handle)= self.window_handle.clone(){
+            return true;
+        }
+        false
+    }
+    pub(super) fn redraw(&self) {
+        if let Some(handle) = self.window_handle.clone() {
             handle.request_redraw();
         }
     }
-    pub(super) fn inner_size(&self) -> AHSize{
-        let size=self.window_handle.as_ref().unwrap().inner_size();
+    pub(super) fn inner_size(&self) -> AHSize {
+        let size = self.window_handle.as_ref().unwrap().inner_size();
         AHSize::from_physical_size(size)
     }
-
 }
-

@@ -4,7 +4,7 @@
 
 ## Current Status
 
-- **Initial Development**: The project is just getting started, and the first major milestone, the `ah_app` crate, has been completed.
+- **Initial Development**: The project is just getting started, and the first major milestone, the essentials/the base of `ah_app` crate, has been completed.
 - **Simplicity First**: The focus is on creating a minimal and clear codebase that can be easily understood and expanded upon.
 
 ## Features (Planned)

@@ -17,6 +17,7 @@ use ah_app::app_instance::AHApp;
 use ah_app::{AHAppCmd, AHAppCmdBuffer, AHEvents};
 use winit::{keyboard::{KeyCode}, window::Icon, dpi::PhysicalSize};
 use image::GenericImageView;
+
 fn main() {
     let mut app: AHApp<()> = AHApp::new("App Example".to_string(), Some(load_icon("assets/favicon.png")), &event_handler);
     app.run();

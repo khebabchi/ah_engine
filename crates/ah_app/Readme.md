@@ -1,6 +1,7 @@
 # ah_app
 
 `ah_app` is a lightweight Rust crate designed for building simple and flexible applications with event-driven architectures. It provides easy-to-use APIs for handling window events, keyboard input, and application commands. Ideal for creating desktop applications and games that require custom event handling and window management.
+> Made specially for **AH Engine** needs.
 
 ## Features
 
@@ -12,15 +13,12 @@
 ## Example
 
 ```Rust
-use ah_app::{AHApp, AHAppCmd, AHAppCmdBuffer, AHEvents};
 use ah_app::app_instance::AHApp;
-use winit::event::{ElementState, KeyCode, KeyEvent};
-use winit::keyboard::PhysicalKey;
-use winit::window::Icon;
-
+use ah_app::{AHAppCmd, AHAppCmdBuffer, AHEvents};
+use winit::{keyboard::{KeyCode}, window::Icon, dpi::PhysicalSize};
+use image::GenericImageView;
 fn main() {
     let mut app: AHApp<()> = AHApp::new("App Example".to_string(), Some(load_icon("assets/favicon.png")), &event_handler);
-
     app.run();
 }
 
@@ -45,6 +43,8 @@ fn event_handler(events: AHEvents<()>) -> AHAppCmdBuffer {
 
     cmd_buffer
 }
+
+// -------------------------------- helper function --------------------------------
 
 pub fn load_icon(path: &str) -> Icon {
     let icon_image = image::open(path).expect("Failed to open icon");

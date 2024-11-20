@@ -80,7 +80,27 @@ impl<UserEvent:'static+Clone+Debug+Default> AHEvents<UserEvent>{
     }
     pub fn key_pressed(&self,code:KeyCode)->bool{
         for event in &self.keyboard_events{
-            if let KeyEvent{physical_key:PhysicalKey::Code(key_code),..}=event{
+            if let KeyEvent{physical_key:PhysicalKey::Code(key_code),state:ElementState::Pressed,..}=event{
+                if key_code.eq(&code) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    pub fn key_released(&self,code:KeyCode)->bool{
+        for event in &self.keyboard_events{
+            if let KeyEvent{physical_key:PhysicalKey::Code(key_code),state:ElementState::Released,..}=event{
+                if key_code.eq(&code) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    pub fn key_held(&self,code:KeyCode)->bool{
+        for event in &self.keyboard_events{
+            if let KeyEvent{physical_key:PhysicalKey::Code(key_code),repeat:true,..}=event{
                 if key_code.eq(&code) {
                     return true;
                 }

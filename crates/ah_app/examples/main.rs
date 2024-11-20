@@ -23,10 +23,10 @@ fn event_handler(events: AHEvents<()>) -> AHAppCmdBuffer {
     if events.close_requested() {
         cmd_buffer.register_cmd(AHAppCmd::Exit);
     }
-    if events.key_pressed(KeyCode::KeyW) {
+    if events.key_held(KeyCode::KeyW) {
         cmd_buffer.register_cmd(AHAppCmd::ResizeWindow(PhysicalSize::new(700, 700)));
     }
-    if events.key_pressed(KeyCode::KeyS) {
+    if events.key_held(KeyCode::KeyS) {
         cmd_buffer.register_cmd(AHAppCmd::ResizeWindow(PhysicalSize::new(500, 500)));
     }
     if events.key_pressed(KeyCode::Enter) {

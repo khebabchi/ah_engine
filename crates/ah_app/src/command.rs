@@ -21,6 +21,7 @@ impl<'ael,'win>  AHAppCmdHandler<'ael,'win> {
                     self.active_event_loop.exit();
                 }
                 AHAppCmd::ResizeWindow(size) => {
+                    self.window.set_fullscreen(false);
                     self.window.resize(size);
                 }
                 AHAppCmd::FullScreen => {

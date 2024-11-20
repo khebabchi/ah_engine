@@ -15,7 +15,7 @@ impl Window {
     }
     pub(super) fn resize(&self, size: AHSize) {
         if let Some(handle) = self.window_handle.clone() {
-            handle.request_inner_size(size.to_physical_size()).unwrap();
+            handle.request_inner_size(size.to_physical_size());
         }
     }
     pub fn set_fullscreen(&self, state: bool) -> bool {

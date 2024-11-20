@@ -2,7 +2,7 @@ use image::GenericImageView;
 use winit::event::{ElementState, KeyEvent, WindowEvent};
 use winit::keyboard::{KeyCode, PhysicalKey};
 use winit::window::Icon;
-use ah_app::{AHAppCmd, AHAppCmdBuffer, AHAppCmdHandler, AHEvent, AHEvents, Actions};
+use ah_app::{AHAppCmd, AHAppCmdBuffer, AHAppCmdHandler, AHEvent, AHEvents, AHSize, Actions};
 use ah_app::app_instance::AHApp;
 
 fn main() {
@@ -30,11 +30,17 @@ fn event_handler(events: AHEvents)->AHAppCmdBuffer {
                         ..
                     }  => {
                         match code {
-                            KeyCode::Escape=>{
-                                cmd_buffer.register_cmd(AHAppCmd::Windowed);
+                            KeyCode::KeyW=>{
+                                cmd_buffer.register_cmd(AHAppCmd::ResizeWindow(AHSize::new(700,700)));
+                            }
+                            KeyCode::KeyS=>{
+                                cmd_buffer.register_cmd(AHAppCmd::ResizeWindow(AHSize::new(500,500)));
                             }
                             KeyCode::Enter => {
                                 cmd_buffer.register_cmd(AHAppCmd::FullScreen);
+                            }
+                            KeyCode::Escape => {
+                                cmd_buffer.register_cmd(AHAppCmd::Windowed);
                             }
                             _=>{}
                         }

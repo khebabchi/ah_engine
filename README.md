@@ -11,7 +11,7 @@
 
 - **Modular Design**: A simple, modular architecture that allows developers to integrate and modify components effortlessly.
 - **WGPU Renderer**: Leveraging WGPU for modern, cross-platform rendering capabilities.
-- **Lightweight ECS**: Basic entity-component-system (ECS) functionality for game logic management.
+- **Bevy ECS**: bevy_ecs crate integration for game logic management.
 - **User-Friendly**: Minimalistic design to ensure ease of learning and integration.
 
 ## Getting Started  with ah_app example
@@ -34,12 +34,6 @@
     ```bash
     cargo run --example main
     ```
-
-## Future Plans
-
-- Add more modules for rendering, input handling, and asset management.
-- Implement a basic ECS for handling game logic in a clean, maintainable way.
-- Create simple demos to showcase the capabilities of the engine.
 
 ## License
 

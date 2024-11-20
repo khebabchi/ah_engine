@@ -1,6 +1,6 @@
-use crate::AHSize;
 use std::sync::Arc;
-use winit::window::{Fullscreen, Icon};
+use winit::dpi::PhysicalSize;
+use winit::window::{Fullscreen};
 
 #[derive(Default)]
 pub struct Window {
@@ -13,9 +13,9 @@ impl Window {
     pub(super) fn set_handle(&mut self, handle: winit::window::Window) {
         self.window_handle = Some(Arc::new(handle));
     }
-    pub(super) fn resize(&self, size: AHSize) {
+    pub(super) fn resize(&self, size: PhysicalSize<u32>) {
         if let Some(handle) = self.window_handle.clone() {
-            handle.request_inner_size(size.to_physical_size());
+            handle.request_inner_size(size);
         }
     }
     pub fn set_fullscreen(&self, state: bool) -> bool {
@@ -35,8 +35,8 @@ impl Window {
             handle.request_redraw();
         }
     }
-    pub(super) fn inner_size(&self) -> AHSize {
-        let size = self.window_handle.as_ref().unwrap().inner_size();
-        AHSize::from_physical_size(size)
+    pub(super) fn inner_size(&self) -> PhysicalSize<u32> {
+        self.window_handle.as_ref().unwrap().inner_size()
+
     }
 }

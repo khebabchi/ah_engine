@@ -1,7 +1,5 @@
 use winit::dpi::PhysicalSize;
 use winit::event_loop::ActiveEventLoop;
-use winit::window::Fullscreen;
-use crate::{AHEvent, AHSize};
 use crate::window::Window;
 
 pub struct AHAppCmdHandler<'ael,'win> {
@@ -55,7 +53,7 @@ impl Iterator for AHAppCmdBuffer{
 }
 pub enum AHAppCmd{
     Exit,
-    ResizeWindow(AHSize),
+    ResizeWindow(PhysicalSize<u32>),
     FullScreen,
     Windowed
 }

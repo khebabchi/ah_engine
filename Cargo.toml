@@ -5,7 +5,7 @@ edition = "2021"
 
 [workspace]
 
-members = [ "crates/ah_app","crates/ah_loader", "crates/ah_macros", "crates/ah_mesh",
+members = [ "crates/ah_app", "crates/ah_loader", "crates/ah_macros", "crates/ah_mesh",
     "crates/ah_render",
 ]
 

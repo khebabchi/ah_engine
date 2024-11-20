@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/ah_app/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/ah_macros/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/ah_commun/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/crates/ah_render/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>

@@ -7,13 +7,13 @@ use winit::event_loop::{ControlFlow, EventLoop, EventLoopProxy};
 use winit::window::Icon;
 use crate::{AHAppCmdBuffer, AHEvents, AHSize};
 use crate::command::AHAppCmdHandler;
-use crate::event::{AHAppEvent, AHEvent, AHEventQueue, Actions};
+use crate::event::{ AHEvent, AHEventQueue, Actions};
 use crate::window::Window;
 /// T is the worlds_hash_map value (the ket is bevy_ecs::World)
 
-pub struct AHApp<UserEvent: 'static>{
+pub struct AHApp<UserEvent: 'static+Debug+Clone>{
     pub(crate) window: Window,
-    pub(crate) event_queue:AHEventQueue,
+    pub(crate) event_queue:AHEventQueue<UserEvent>,
     pub(crate) event_proxy:Option<EventLoopProxy<UserEvent>>,
     pub(crate) title:String,
     pub(crate) icon:Option<Icon>
@@ -24,9 +24,9 @@ pub enum Worlds{
     Render,
     Game,
 }
-impl<UserEvent : 'static> AHApp<UserEvent>
+impl<UserEvent : 'static+Clone+Debug> AHApp<UserEvent>
 {
-    pub fn new<F>(title:String,icon:Option<Icon>,event_handler:F) -> Self where F:FnMut(AHEvents)->AHAppCmdBuffer + 'static{
+    pub fn new<F>(title:String,icon:Option<Icon>,event_handler:F) -> Self where F:FnMut(AHEvents<UserEvent>)->AHAppCmdBuffer + 'static{
         AHApp{
             window: Default::default(),
             event_queue: AHEventQueue::new(event_handler),
@@ -40,7 +40,7 @@ impl<UserEvent : 'static> AHApp<UserEvent>
     /// - Some information :
     ///   - **ControlFlow::wait** --> **on event rerender**
     ///   - **ControlFlow::pull** --> **every frame rerender**
-    pub fn event_queue(&mut self)->&AHEventQueue{
+    pub fn event_queue(&mut self)->&AHEventQueue<UserEvent>{
         &self.event_queue
     }
     pub fn resize(&mut self, size:AHSize) {

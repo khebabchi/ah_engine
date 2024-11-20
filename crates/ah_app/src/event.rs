@@ -1,3 +1,4 @@
+use std::fmt::Debug;
 use winit::event::WindowEvent;
 use winit::event_loop::ActiveEventLoop;
 use crate::{AHAppCmdBuffer, AHSize};
@@ -5,20 +6,16 @@ use crate::command::AHAppCmdHandler;
 use crate::window::Window;
 
 #[derive(Clone,Debug)]
-pub enum AHEvent {
-    App(AHAppEvent),
+pub enum AHEvent <T>{
+    App(T),
     Window(WindowEvent)
 }
-#[derive(Clone,Eq,PartialEq,Debug)]
-pub enum AHAppEvent {
-    HandleEvents
-}
 
-pub struct AHEventQueue {
-    pub queue: Vec<AHEvent>,
-    pub handle_function:AHEventListener
+pub struct AHEventQueue<T:'static+Clone+Debug> {
+    pub queue: Vec<AHEvent<T>>,
+    pub handle_function:AHEventHandler<T>
 }
-type AHEventListener=Box<dyn FnMut(AHEvents)->AHAppCmdBuffer>;
+type AHEventHandler<T>=Box<dyn FnMut(AHEvents<T>)->AHAppCmdBuffer>;
 pub struct Actions<'ael,'win>{
     event_loop:&'ael ActiveEventLoop,
     window:&'win mut Window
@@ -33,9 +30,9 @@ macro_rules! is_event_requested {
         }
     };
 }
-pub type AHEvents=Vec<AHEvent>;
-impl AHEventQueue {
-    pub(crate) fn new<F>(handle_function:F) -> AHEventQueue where F:FnMut(AHEvents)->AHAppCmdBuffer + 'static{
+pub type AHEvents<T>=Vec<AHEvent<T>>;
+impl<T:'static+Clone+Debug> AHEventQueue<T> {
+    pub(crate) fn new<F>(handle_function:F) -> AHEventQueue<T> where F:FnMut(AHEvents<T>)->AHAppCmdBuffer + 'static{
         AHEventQueue{ queue: vec![], handle_function:Box::new(handle_function) }
     }
 

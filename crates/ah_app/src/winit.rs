@@ -1,5 +1,4 @@
 use crate::app_instance::AHApp;
-use crate::event::AHAppEvent;
 use std::fmt::{Debug, Display};
 use std::hash::Hash;
 
@@ -10,7 +9,7 @@ use winit::window::{Window, WindowId};
 use winit::event::*
 ;
 
-impl<UserEvent> ApplicationHandler<UserEvent> for AHApp<UserEvent> {
+impl<UserEvent:'static+Debug+Clone> ApplicationHandler<UserEvent> for AHApp<UserEvent> {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
         if !self.window.is_created() {
             let window = event_loop

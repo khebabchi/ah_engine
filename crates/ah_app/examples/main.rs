@@ -6,12 +6,12 @@ use ah_app::{AHAppCmd, AHAppCmdBuffer, AHAppCmdHandler, AHEvent, AHEvents, AHSiz
 use ah_app::app_instance::AHApp;
 
 fn main() {
-    let mut app: AHApp<Option<()>>  =AHApp::new("App Example".to_string(),Some(load_icon("assets/favicon.png")),&event_handler);
+    let mut app: AHApp<()>  =AHApp::new("App Example".to_string(),Some(load_icon("assets/favicon.png")),&event_handler);
 
     app.run();
 }
 
-fn event_handler(events: AHEvents)->AHAppCmdBuffer {
+fn event_handler(events: AHEvents<()>)->AHAppCmdBuffer {
     let mut cmd_buffer =AHAppCmdBuffer::new();
     for event in events {
         match event {

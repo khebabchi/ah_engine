@@ -1,18 +1,20 @@
+use std::fmt::Debug;
 use winit::dpi::PhysicalSize;
-use winit::event_loop::ActiveEventLoop;
+use winit::event_loop::{ActiveEventLoop, EventLoopProxy};
 use crate::window::Window;
 
-pub struct AHAppCmdHandler<'ael,'win> {
+pub struct AHAppCmdHandler<'ael,'win,UserEvent: 'static+Debug+Clone+Default> {
     active_event_loop:&'ael ActiveEventLoop,
-    window:&'win Window
+    window:&'win Window,
+    event_loop_proxy:&'win EventLoopProxy<UserEvent>,
 }
-impl<'ael,'win>  AHAppCmdHandler<'ael,'win> {
-    pub(crate) fn new(active_event_loop: &'ael ActiveEventLoop, window: &'win Window) -> AHAppCmdHandler<'ael,'win> {
+impl<'ael,'win,UserEvent: 'static+Debug+Clone+Default+Eq>  AHAppCmdHandler<'ael,'win,UserEvent> {
+    pub(crate) fn new(active_event_loop: &'ael ActiveEventLoop,event_loop_proxy: &'win EventLoopProxy<UserEvent>, window: &'win Window) -> AHAppCmdHandler<'ael,'win,UserEvent> {
         AHAppCmdHandler{
-            active_event_loop,window
+            active_event_loop,window,event_loop_proxy
         }
     }
-    pub(crate) fn handle(self,cmd_buffer:AHAppCmdBuffer){
+    pub(crate) fn handle(self,cmd_buffer:AHAppCmdBuffer<UserEvent>){
         for cmd in cmd_buffer{
             match cmd{
                 AHAppCmd::Exit => {
@@ -27,33 +29,37 @@ impl<'ael,'win>  AHAppCmdHandler<'ael,'win> {
                 }AHAppCmd::Windowed => {
                     self.window.set_fullscreen(false);
                 }
+                AHAppCmd::SendEvent(event) => {
+                    self.event_loop_proxy.send_event(event).unwrap();
+                }
             }
         }
     }
 }
-pub struct AHAppCmdBuffer{
-    commands:Vec<AHAppCmd>,
+pub struct AHAppCmdBuffer<UserEvent: 'static+Debug+Clone+Default>{
+    commands:Vec<AHAppCmd<UserEvent>>,
 }
-impl AHAppCmdBuffer{
-    pub fn new() ->AHAppCmdBuffer{
+impl<UserEvent: 'static+Debug+Clone+Default+Eq> AHAppCmdBuffer<UserEvent>{
+    pub fn new() ->AHAppCmdBuffer<UserEvent>{
         AHAppCmdBuffer{
             commands:Vec::new(),
         }
     }
-    pub fn register_cmd(&mut self,cmd:AHAppCmd){
+    pub fn register_cmd(&mut self,cmd:AHAppCmd<UserEvent>){
         self.commands.push(cmd);
     }
 }
-impl Iterator for AHAppCmdBuffer{
-    type Item = AHAppCmd;
+impl<UserEvent: 'static+Debug+Clone+Default+Eq> Iterator for AHAppCmdBuffer<UserEvent>{
+    type Item = AHAppCmd<UserEvent>;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.commands.pop()
     }
 }
-pub enum AHAppCmd{
+pub enum AHAppCmd<UserEvent>{
     Exit,
     ResizeWindow(PhysicalSize<u32>),
     FullScreen,
-    Windowed
+    Windowed,
+    SendEvent(UserEvent),
 }

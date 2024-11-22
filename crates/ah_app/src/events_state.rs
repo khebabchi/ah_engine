@@ -4,7 +4,7 @@ use winit::event::{ElementState, WindowEvent, MouseButton, KeyEvent, MouseScroll
 use winit::keyboard::{KeyCode, PhysicalKey};
 use crate::AHAppCmdBuffer;
 
-pub(crate) type AHEventHandler<UserEvent>=Box<dyn Fn(AHEvents<UserEvent>)->AHAppCmdBuffer>;
+pub(crate) type AHEventHandler<UserEvent>=Box<dyn Fn(AHEvents<UserEvent>)->AHAppCmdBuffer<UserEvent>>;
 
 #[macro_export]
 macro_rules! is_event_requested {
@@ -19,7 +19,7 @@ macro_rules! is_event_requested {
 
 
 #[derive(Debug,Clone,Default)]
-pub struct AHEvents<UserEvent:'static+Clone+Debug+Default>{
+pub struct AHEvents<UserEvent:'static+Clone+Debug+Default+Eq>{
     // Window events
     close_requested:bool,
     resized:Option<PhysicalSize<u32>>,
@@ -32,7 +32,7 @@ pub struct AHEvents<UserEvent:'static+Clone+Debug+Default>{
     user_events:Vec<UserEvent>,
 
 }
-impl<UserEvent:'static+Clone+Debug+Default> AHEvents<UserEvent>{
+impl<UserEvent:'static+Clone+Debug+Default+Eq> AHEvents<UserEvent>{
     pub fn dispatch_window_event(&mut self,event: WindowEvent) {
         match event {
             WindowEvent::CloseRequested => self.close_requested=true,
@@ -78,6 +78,14 @@ impl<UserEvent:'static+Clone+Debug+Default> AHEvents<UserEvent>{
     pub fn mouse_wheel_scrolled(&self) -> Option<MouseScrollDelta> {
         self.mouse_wheel_delta
     }
+    pub fn user_event_received(&self,event:UserEvent)->bool{
+        for user_event in &self.user_events{
+            if event.eq(user_event){
+                return true;
+            }
+        }
+        false
+    }
     pub fn key_pressed(&self,code:KeyCode)->bool{
         for event in &self.keyboard_events{
             if let KeyEvent{physical_key:PhysicalKey::Code(key_code),state:ElementState::Pressed,..}=event{
@@ -109,3 +117,5 @@ impl<UserEvent:'static+Clone+Debug+Default> AHEvents<UserEvent>{
         return false;
     }
 }
+
+

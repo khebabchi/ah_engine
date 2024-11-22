@@ -9,29 +9,22 @@ use crate::events_state::AHEvents;
 use crate::window::Window;
 /// T is the worlds_hash_map value (the ket is bevy_ecs::World)
 
-pub struct AHApp<UserEvent: 'static+Debug+Clone+Default>{
+pub struct AHApp<UserEvent: 'static+Debug+Clone+Default+Eq>{
     pub(crate) window: Window,
     pub(crate) event_state:AHEvents<UserEvent>,
     pub(crate) event_proxy:Option<EventLoopProxy<UserEvent>>,
-    worlds: Vec<World>,
     pub(crate) title:String,
     pub(crate) icon:Option<Icon>,
     pub event_handler: crate::events_state::AHEventHandler<UserEvent>
 }
-#[derive(Clone,Hash,Default,Debug, Eq,PartialEq)]
-pub enum Worlds{
-    #[default]
-    Render,
-    Game,
-}
-impl<UserEvent : 'static+Clone+Debug+Default> AHApp<UserEvent>
+
+impl<UserEvent : 'static+Clone+Debug+Default+Eq> AHApp<UserEvent>
 {
-    pub fn new<F>(title:String,icon:Option<Icon>,event_handler:F) -> Self where F:Fn(AHEvents<UserEvent>)->AHAppCmdBuffer + 'static{
+    pub fn new<F>(title:String,icon:Option<Icon>,event_handler:F) -> Self where F:Fn(AHEvents<UserEvent>)->AHAppCmdBuffer<UserEvent> + 'static{
         AHApp{
             window: Default::default(),
             event_state: Default::default(),
             event_proxy:None,
-            worlds: vec![],
             title,
             icon,
             event_handler:Box::new(event_handler),
@@ -45,7 +38,7 @@ impl<UserEvent : 'static+Clone+Debug+Default> AHApp<UserEvent>
 
 
     pub(crate) fn handle_events(&mut self, active_event_loop: &ActiveEventLoop) {
-        let cmd_handler= AHAppCmdHandler::new(active_event_loop,&self.window);
+        let cmd_handler= AHAppCmdHandler::new(active_event_loop,&self.event_proxy.as_ref().unwrap(),&self.window);
         let event_state=self.event_state.clone();
         let cmd_buffer=(self.event_handler)(event_state);
         cmd_handler.handle(cmd_buffer);

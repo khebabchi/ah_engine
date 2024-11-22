@@ -74,8 +74,11 @@ version = "0.1.0"
 name = "ah_render"
 version = "0.1.0"
 dependencies = [
+ "bevy_ecs",
+ "bevy_ecs_macros",
  "ulid",
  "wgpu",
+ "winit",
 ]
 
 [[package]]

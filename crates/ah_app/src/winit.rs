@@ -9,7 +9,7 @@ use winit::window::{Window, WindowId};
 use winit::event::*
 ;
 
-impl<UserEvent:'static+Clone+Debug+Default> ApplicationHandler<UserEvent> for AHApp<UserEvent> {
+impl<UserEvent:'static+Clone+Debug+Default+Eq> ApplicationHandler<UserEvent> for AHApp<UserEvent> {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
         if !self.window.is_created() {
             let window = event_loop

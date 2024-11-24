@@ -1,5 +1,6 @@
-use ulid::Ulid;
+use bevy_ecs::prelude::Entity;
 use wgpu::Buffer;
+use crate::items::ids::{IndexBufferId, VertexBufferId};
 
 pub struct AHVertexBuffer {
     allocated_size: u32,
@@ -11,9 +12,9 @@ pub struct AHVertexBuffer {
     attributes: Vec<AHTypeVertex>,
 }
 pub struct AHVertexGroup {
-    id: Ulid,
-    vertex_buffers: Vec<AHVertexBuffer>, // Assuming AHVertexBuffer is defined elsewhere
-    index_buffer: Vec<AHIndexBuffer>,    // Assuming AHIndexBuffer is defined elsewhere
+    id: Entity,
+    vertex_buffers: Vec<VertexBufferId>, // Assuming AHVertexBuffer is defined elsewhere
+    index_buffer: Vec<IndexBufferId>,    // entity of index buffer
 }
 
 pub struct AHIndexBuffer {

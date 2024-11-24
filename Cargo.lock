@@ -79,7 +79,6 @@ dependencies = [
  "bevy_ecs",
  "bevy_ecs_macros",
  "image",
- "ulid",
  "wgpu",
  "winit",
 ]

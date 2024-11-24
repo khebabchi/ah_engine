@@ -1,5 +1,5 @@
+use bevy_ecs::prelude::Entity;
 use image::DynamicImage;
-use ulid::Ulid;
 use wgpu::{AddressMode, FilterMode, CompareFunction, SamplerBorderColor, Sampler, Texture, Extent3d};
 
 pub struct AHSampler {
@@ -21,10 +21,8 @@ pub struct AHSampler {
 // AHTexture Struct
 pub struct AHTexture {
     allocated: bool,
-    texture_buffer: DynamicImage,
-    texture_handle: Texture,
+    handle: Texture,
     last_use: u8,
-    id: Ulid,
     size: Extent3d, // Assuming PhysicalSize is from a crate like `winit` or defined elsewhere
-    texture_slot: u32,
+    slot: u32,
 }

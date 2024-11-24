@@ -2,6 +2,7 @@ use ah_app::app_instance::AHApp;
 use ah_app::{AHAppCmd, AHAppCmdBuffer, AHEvents};
 use image::GenericImageView;
 use winit::dpi::PhysicalSize;
+use winit::event::MouseButton;
 use winit::keyboard::{KeyCode};
 use winit::window::Icon;
 
@@ -27,6 +28,8 @@ fn event_handler(events: AHEvents<String>) -> AHAppCmdBuffer<String> {
     }
     if events.key_released(KeyCode::KeyS) {
         cmd_buffer.register_cmd(AHAppCmd::ResizeWindow(PhysicalSize::new(500, 500)));
+    }
+    if events.mouse_pressed(MouseButton::Left) {
         cmd_buffer.register_cmd(AHAppCmd::SendEvent("hello".to_string()));
     }
     if events.key_pressed(KeyCode::Enter) {

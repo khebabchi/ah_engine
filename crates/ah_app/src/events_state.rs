@@ -96,6 +96,22 @@ impl<UserEvent:'static+Clone+Debug+Default+Eq> AHEvents<UserEvent>{
         }
         return false;
     }
+    pub fn mouse_pressed(&self,mouse_button:MouseButton)->bool{
+        for (button,state) in &self.mouse_events{
+            if mouse_button.eq(&button) && *state == ElementState::Pressed {
+                return true;
+            }
+        }
+        false
+    }
+    pub fn mouse_released(&self,mouse_button:MouseButton)->bool{
+        for (button,state) in &self.mouse_events{
+            if mouse_button.eq(&button) && *state == ElementState::Released {
+                return true;
+            }
+        }
+        false
+    }
     pub fn key_released(&self,code:KeyCode)->bool{
         for event in &self.keyboard_events{
             if let KeyEvent{physical_key:PhysicalKey::Code(key_code),state:ElementState::Released,..}=event{

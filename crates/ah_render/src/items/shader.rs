@@ -1,16 +1,25 @@
 use bevy_ecs::prelude::Entity;
 use wgpu::ShaderModule;
-use crate::items::buffer::AHVertexGroup;
-use crate::items::group::{AHGroup, AHGroupLayout, AHIndexBuffer, AHTypeVertex};
+use crate::items::{ AHTypeVertex};
+use crate::items::group::{Group, GroupLayout};
+use crate::items::scene::Scene;
 
-pub struct AHShaderLayout {
-    id: Entity,
-    handle: ShaderModule,
-    groups: Vec<AHGroupLayout>,
-    vertex_layouts: Vec<AHTypeVertex>,
+pub struct ShaderInfo {
+    groups: Vec<GroupLayout>,
+    vb_layouts: Vec<AHTypeVertex>,
 }
+
+
 pub struct AHShaderContext {
-    groups: Vec<AHGroup>,
-    vertex_group: AHVertexGroup,
-    index_buffer: AHIndexBuffer,
+    groups: Vec<GroupInfoId>,
+    scene: Scene,
+}
+
+impl AHShaderContext {
+    pub(crate) fn execute(&self){
+
+    }
+    pub fn reload(){
+        todo!()
+    }
 }

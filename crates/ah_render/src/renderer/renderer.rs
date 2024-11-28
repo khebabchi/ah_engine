@@ -1,17 +1,16 @@
 
 use std::sync::Arc;
 use bevy_ecs::prelude::{Res, World};
-use wgpu::{Adapter, Device, Instance, Queue, Surface, SurfaceConfiguration};
+use bevy_ecs::system::EntityCommands;
+use wgpu::{Adapter, Device, Instance, Surface};
 use winit::dpi::PhysicalSize;
 use winit::window::Window;
-use crate::renderer::resource::AHResource;
+use crate::Handle;
 
-struct Renderer{
-    pub world:World,
-}
+pub struct Renderer;
 
 impl Renderer{
-    async fn new(window:Arc<Window>){
+    pub async fn init(world:&mut World,window:Arc<Window>){
         let size=window.inner_size();
         let instance=Renderer::create_instance();
         let (surface,instance) = Renderer::create_surface(instance,window.clone());
@@ -33,15 +32,16 @@ impl Renderer{
 
         //-------------------------------------------
         let ah_shader=AHShader::new(&device, include_str!("../shaders/shader.wgsl").into(), vec![ah_element_buffer], vec![ah_bind_group], &surface_format);*/
-        let mut world=World::new();
-        world.insert_resource(AHResource::new(device));
-        world.insert_resource(AHResource::new(adapter));
-        world.insert_resource(AHResource::new(instance));
-        world.insert_resource(AHResource::new(surface));
-        world.insert_resource(AHResource::new(config));
-        world.insert_resource(AHResource::new(queue));
+
+        world.insert_resource(Handle::new(device));
+        world.insert_resource(Handle::new(adapter));
+        world.insert_resource(Handle::new(instance));
+        world.insert_resource(Handle::new(surface));
+        world.insert_resource(Handle::new(config));
+        world.insert_resource(Handle::new(queue));
 
     }
+
     fn create_instance()->Instance{
         wgpu::Instance::new(wgpu::InstanceDescriptor {
             backends: wgpu::Backends::SECONDARY,
@@ -94,7 +94,30 @@ impl Renderer{
             desired_maximum_frame_latency: 2,
         }
     }
-    //----------------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------
-    //------------------------------------- Systems----------------------------------------
+    /// insert layout into the world
+    /// current bind groups :
+    /// - bg0 :
+    ///     - 0:camera uniform
+    /// TODO
+    pub(crate) fn init_layout(device: &Device,  entity_commands: &mut EntityCommands) {
+        let bg0 = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+            entries: &[
+                // camera uniform buffer
+                wgpu::BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: wgpu::ShaderStages::VERTEX,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Uniform,
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                }
+            ],
+            label: Some("camera_bind_group_layout"),
+        });
+        entity_commands.insert(Handle::new(vec![bg0]));
+
+    }
 }
+

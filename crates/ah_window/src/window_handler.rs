@@ -3,13 +3,14 @@ use winit::dpi::PhysicalSize;
 use winit::window::{Fullscreen};
 
 #[derive(Default)]
-pub struct Window {
-    window_handle: Option<Arc<winit::window::Window>>,
+pub struct AHWindowHandle {
+    pub(super) window_handle: Option<Arc<winit::window::Window>>,
 }
-impl Window {
+impl AHWindowHandle {
     pub(super) fn is_created(&self) -> bool {
         self.window_handle.is_some()
     }
+
     pub(super) fn set_handle(&mut self, handle: winit::window::Window) {
         self.window_handle = Some(Arc::new(handle));
     }

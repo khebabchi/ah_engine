@@ -1,15 +1,15 @@
 use std::fmt::Debug;
 use winit::dpi::PhysicalSize;
 use winit::event_loop::{ActiveEventLoop, EventLoopProxy};
-use crate::window::Window;
+use crate::window_handler::AHWindowHandle;
 
 pub struct AHAppCmdHandler<'ael,'win,UserEvent: 'static+Debug+Clone+Default> {
     active_event_loop:&'ael ActiveEventLoop,
-    window:&'win Window,
+    window:&'win AHWindowHandle,
     event_loop_proxy:&'win EventLoopProxy<UserEvent>,
 }
 impl<'ael,'win,UserEvent: 'static+Debug+Clone+Default+Eq>  AHAppCmdHandler<'ael,'win,UserEvent> {
-    pub(crate) fn new(active_event_loop: &'ael ActiveEventLoop,event_loop_proxy: &'win EventLoopProxy<UserEvent>, window: &'win Window) -> AHAppCmdHandler<'ael,'win,UserEvent> {
+    pub(crate) fn new(active_event_loop: &'ael ActiveEventLoop,event_loop_proxy: &'win EventLoopProxy<UserEvent>, window: &'win AHWindowHandle) -> AHAppCmdHandler<'ael,'win,UserEvent> {
         AHAppCmdHandler{
             active_event_loop,window,event_loop_proxy
         }

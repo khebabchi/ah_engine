@@ -1,40 +1,12 @@
 use bevy_ecs::prelude::Entity;
 use wgpu::*;
 use wgpu::core::id::SamplerId;
-use crate::items::buffer::{AHIndexBuffer, AHTypeVertex, AHVertexBuffer};
-use crate::items::ids::{StorageBufferId, TextureId, UniformBufferId};
-use crate::items::texture::AHTexture;
+use crate::items::ids_and_types::{StorageBufferId, TextureId, UBufferId};
 
-// AHPipeline
-
-
-// AHGroupLayout
-pub struct AHGroupLayout {
-    entries: Vec<LayoutEntry>,
+pub struct GroupInfo {
+    group_layout: Vec<Vec<LayoutEntry>>,
 }
 
-// AHGroup
-pub struct AHGroup {
-    slots: Vec<AHSlot>,
-    index: u32,
-    label: String,
-}
-
-// AHSlot Enum
-#[derive(Debug, Clone, Copy)]
-pub enum AHSlot {
-    Texture(TextureId),
-    Uniform(UniformBufferId),
-    Sampler(SamplerId),
-    Storage(StorageBufferId),
-}
-pub struct AHUniform {
-    buffer: Buffer,
-    allocated_size: u32,
-    is_mutable: bool,
-    label: String,
-    attribute: i32,
-}
 
 #[derive(Debug, Clone, Copy)]
 pub enum LayoutEntry {
@@ -43,7 +15,5 @@ pub enum LayoutEntry {
     Uniform,
     Storage,
 }
-
-// AHVertexGroup Struct
 
 

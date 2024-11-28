@@ -28,10 +28,9 @@ checksum = "512761e0bb2578dd7380c6baaa0f4ce03e84f95e960231d1dec8bf4d7d6e2627"
 name = "ah_app"
 version = "0.1.0"
 dependencies = [
- "bevy_ecs",
- "image",
- "tracing",
- "tracing-subscriber",
+ "ah_render",
+ "ah_window",
+ "pollster",
  "winit",
 ]
 
@@ -65,21 +64,26 @@ dependencies = [
 ]
 
 [[package]]
-name = "ah_macros"
-version = "0.1.0"
-
-[[package]]
-name = "ah_mesh"
-version = "0.1.0"
-
-[[package]]
 name = "ah_render"
 version = "0.1.0"
 dependencies = [
  "bevy_ecs",
  "bevy_ecs_macros",
+ "bytemuck",
+ "glam",
  "image",
  "wgpu",
+ "winit",
+]
+
+[[package]]
+name = "ah_window"
+version = "0.1.0"
+dependencies = [
+ "bevy_ecs",
+ "image",
+ "tracing",
+ "tracing-subscriber",
  "winit",
 ]
 

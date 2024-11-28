@@ -1,4 +1,4 @@
-use crate::items::shader::{AHShaderContext, AHShaderLayout};
+use crate::items::{AHShaderContext, AHShaderLayout};
 
 pub struct AHPipeline {
     label: String,

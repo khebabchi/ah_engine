@@ -3,12 +3,12 @@ use winit::dpi::PhysicalSize;
 use winit::event::MouseButton;
 use winit::keyboard::{KeyCode};
 use winit::window::Icon;
+use app::app::App;
 
 fn main() {
-    let mut app: AHApp<String> = AHWind::new(
+    let mut app: App<String> = App::new(
         "App Example".to_string(),
-        Some(load_icon("assets/favicon.png")),
-        &event_handler,
+        Some(load_icon("assets/favicon.png"))
     );
 
     app.run();

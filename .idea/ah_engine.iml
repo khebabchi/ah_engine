@@ -2,19 +2,19 @@
 <module type="EMPTY_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/crates/ah_render/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/crates/ah_app/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/crates/ah_loader/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/ah_mesh/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/ah_sprite/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/ah_macros/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/ah_commun/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/crates/ah_window/examples" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/crates/ah_window/src" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/crates/ah_render/target" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/renderer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/app/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/app/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/app/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/loader/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
+      <excludeFolder url="file://$MODULE_DIR$/crates/renderer/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

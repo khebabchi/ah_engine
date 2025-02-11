@@ -27,7 +27,7 @@
 
 3. **Go to ah_app folder**:
     ```bash
-    cd./crates/ah_window
+    cd./crates/app
     ```
 
 4. **Run the Example (when available)**:

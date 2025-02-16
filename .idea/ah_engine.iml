@@ -9,12 +9,14 @@
       <sourceFolder url="file://$MODULE_DIR$/crates/ah_macros/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/ah_commun/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/renderer/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/app/examples" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/app/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/app/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/app/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/app/src/app/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/app/src/app/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/app/src/app/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/loader/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/crates/renderer/target" />
+      <excludeFolder url="file://$MODULE_DIR$/crates/app/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

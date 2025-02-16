@@ -19,7 +19,7 @@ use winit::{keyboard::{KeyCode}, window::Icon, dpi::PhysicalSize};
 use image::GenericImageView;
 
 fn main() {
-    let mut app: AHApp<()> = AHApp::new("App Example".to_string(), Some(load_icon("assets/favicon.png")), &event_handler);
+    let mut app: AHApp<()> = AHApp::new("ThreDe Engine".to_string(), Some(load_icon("assets/icon.png")), &event_handler);
     app.run();
 }
 

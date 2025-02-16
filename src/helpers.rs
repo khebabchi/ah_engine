@@ -1,18 +1,5 @@
 use image::GenericImageView;
-use winit::dpi::PhysicalSize;
-use winit::event::MouseButton;
-use winit::keyboard::{KeyCode};
 use winit::window::Icon;
-use app::app::App;
-
-fn main() {
-    let mut app: App<String> = App::new(
-        "App Example".to_string(),
-        Some(load_icon("assets/favicon.png"))
-    );
-
-    app.run();
-}
 
 pub fn load_icon(path: &str) -> Icon {
     // Load the icon image from a file (e.g., "icon.png")

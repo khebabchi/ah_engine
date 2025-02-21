@@ -1,20 +1,9 @@
 [package]
-name = "k_engine"
+name = "renderer"
 version = "0.1.0"
 edition = "2021"
 
-[workspace]
-members = [
-    "crates/app",
-    "crates/renderer"
-]
-resolver = "2"  # Use Cargo's resolver version 2 (recommended for Rust 2021+)
-
-
-
 [dependencies]
-app = { path = "crates/app" }
-renderer = { path = "crates/renderer" }
 winit = { version = "0.30.9", features = ["rwh_05"] }
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
@@ -27,8 +16,7 @@ bevy_ecs = "0.15.2"
 bevy_ecs_macros = "0.15.2"
 tobj  = "4.0.3"
 gltf = "1.4.1"
-glam = "0.30.0"
-rodio = { version = "0.20.1", default-features = false, features = ["symphonia-all"] }
+glam = "0.29.2"
 egui = "0.31.0"
-
-rapier3d  = "0.23.0"
+egui-wgpu = "0.31.0"
+egui-winit = "0.31.0"

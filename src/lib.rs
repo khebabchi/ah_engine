@@ -1,6 +1,7 @@
 
 mod helpers;
 mod main_app;
+pub mod audio_manager;
 
 use winit::dpi::{PhysicalPosition, PhysicalSize};
 use winit::window::WindowAttributes;

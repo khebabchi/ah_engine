@@ -1,11 +1,10 @@
 use rodio::{Decoder, OutputStream, Sink};
 use std::collections::HashMap;
 use std::fs::File;
-use std::io::{BufReader, Error};
+use std::io::{BufReader, Error };
 use std::sync::{Arc, Mutex};
 
-#[derive(Debug)]
-struct AudioPlayer {
+pub struct AudioPlayer {
     sink: Arc<Mutex<Sink>>, // Allows pausing/resuming
     audio_files: HashMap<String, String>, // Store file paths with names
     current_audio: Option<String>, // Track current audio
@@ -13,9 +12,9 @@ struct AudioPlayer {
 
 impl AudioPlayer {
     /// Create a new AudioPlayer
-    fn new() -> Result<Self, Error> {
-        let (_stream, stream_handle) = OutputStream::try_default()?;
-        let sink = Sink::try_new(&stream_handle)?;
+    pub fn new() -> Result<Self, Error> {
+        let (_stream, stream_handle) = OutputStream::try_default().expect("no audio output device found");
+        let sink = Sink::try_new(&stream_handle).expect("failed to create audio sink");
 
         Ok(Self {
             sink: Arc::new(Mutex::new(sink)),
@@ -42,8 +41,8 @@ impl AudioPlayer {
     /// Set an audio track and prepare it for playback
     fn set_audio(&mut self, name: &str) -> Result<(), Error> {
         if let Some(file_path) = self.audio_files.get(name) {
-            let file = File::open(file_path)?;
-            let source = Decoder::new(BufReader::new(file))?;
+            let file = File::open(file_path).expect("failed to open audio file");
+            let source = Decoder::new(BufReader::new(file)).expect("failed to decode audio file");
             let sink = self.sink.lock().unwrap();
 
             sink.stop(); // Stop any currently playing audio

@@ -9,17 +9,15 @@ use  app::window::app_events::AppEvent;
 use  app::window::events_manager::EventManager;
 use crate::load_icon;
 use  renderer::Renderer;
-
-
-
-
+use crate::audio_manager::AudioPlayer;
 
 pub struct MainApp{
-    world:World,
+    world:World, 
+    audio_manager:AudioPlayer 
 }
 impl MainApp {
     pub(crate) fn new() -> Self {
-        MainApp{world:World::new()}
+        MainApp{world:World::new(), audio_manager: AudioPlayer::new().unwrap() }
     }
 
 }
